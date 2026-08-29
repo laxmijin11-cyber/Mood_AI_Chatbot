@@ -1,30 +1,44 @@
 # 🤖 Mood Based AI Chatbot
 
-A highly interactive, multi-personality AI chatbot built with **Streamlit** and **LangChain**. Switch between an **Angry**, **Funny**, or **Sad** AI agent and watch the conversation flow in real-time with persistent chat memory.
+A multi-personality AI chatbot built with **Streamlit** and **LangChain**, powered by **Mistral AI**. 
+Users can switch between **Angry**, **Funny**, and **Sad** personalities to experience completely different conversational styles.
+
+---
+
+## 📸 Project Preview
+
+*(Add a screenshot of your chatbot here)*
+
+---
 
 ## ✨ Features
 
-- **🎭 3 Unique AI Personalities**: Choose between Angry, Funny, and Sad modes to change the AI's tone and behavior.
-- **🧠 Chat Memory**: Uses `st.session_state` to maintain the full conversation context (System, Human, and AI messages) across multiple user inputs.
-- **💬 Real-Time Chat UI**: Built with Streamlit's modern `st.chat_input` and `st.chat_message` features for a professional, WhatsApp-like interface.
-- **🔄 One-Click Reset**: Easily clear the conversation and start fresh with a single button.
-- **🔒 Environment Security**: Loads API keys securely via `.env` files (using `python-dotenv`).
+| Feature | Description |
+| :--- | :--- |
+| 🎭 **3 Personas** | Switch between Angry, Funny, and Sad AI personalities instantly. |
+| 🧠 **Chat Memory** | Uses `st.session_state` to retain the full conversation context. |
+| 💬 **Modern UI** | Built with `st.chat_input` and `st.chat_message` for a clean, chat-like interface. |
+| 🔄 **Reset Chat** | One-click button to clear the conversation and start fresh. |
+| 🔒 **Security** | Loads API keys securely using `python-dotenv`. |
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend UI**: [Streamlit](https://streamlit.io/)
-- **AI Framework**: [LangChain](https://www.langchain.com/)
-- **Language Model**: [Mistral AI](https://mistral.ai/) (`mistral-small-2603`)
-- **Environment Management**: `python-dotenv`
+| Category | Technology |
+| :--- | :--- |
+| Frontend UI | Streamlit |
+| AI Framework | LangChain |
+| Language Model | Mistral AI (`mistral-small-2603`) |
+| Environment | Python 3.9+ |
 
-## 📋 Prerequisites
+---
 
-- Python 3.9+
-- A [Mistral AI](https://console.mistral.ai/) API Key
+## 📁 Project Structure
 
-## 🚀 How to Run
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/laxmijin11-cyber/Mood_AI_Chatbot.git
-   cd Mood_AI_Chatbot
+```text
+Mood_AI_Chatbot/
+├── UIchatbot.py                 # Main Streamlit application
+├── requirements.txt       # List of Python dependencies
+├── .env                   # API keys (DO NOT push to GitHub)
+└── README.md              # Project documentation
