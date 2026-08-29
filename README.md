@@ -7,7 +7,8 @@ Users can switch between **Angry**, **Funny**, and **Sad** personalities to expe
 
 ## 📸 Project Preview
 
-*(Add a screenshot of your chatbot here)*
+![Uploading image.png…]()
+
 
 ---
 
