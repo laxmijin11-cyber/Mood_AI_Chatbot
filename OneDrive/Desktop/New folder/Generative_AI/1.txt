@@ -1,0 +1,303 @@
+uv download
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+$env:Path = "C:\Users\Admin\.local\bin;$env:Path"
+uv --version
+uv venv
+.\.venv\Scripts\activate 
+Here . means look into current directory
+
+https://docs.langchain.com/oss/deepagents/code/providers
+uv add langchain didnot worked as we needed a file
+uv pip install langchain
+
+.env-store api key
+LangchainDocs-integrations mai patalagta hai kiss name se .env mai refer kare
+groq-playground has many models to use(qwen,canopylab etc)
+loading .env files into chat model-we need python-dotenv
+
+ChatModels-Langchaindocs ke models mai check:
+init_chat_model:initialize the model
+
+problem:The Problem: The Python library LangChain doesn't recognize the exact model name gemini-3.7-flash yet, so it guessed the wrong provider (it assumed you were using a paid corporate service called Vertex AI, which you are not).
+code:# Gemini models
+model = init_chat_model(model="gemini-3.7-flash")
+response = model.invoke("What is a football?")
+print(response.content)
+solution:
+# ❌ WRONG (What you have now)
+model = init_chat_model(model="gemini-3.7-flash")
+
+# ✅ CORRECT (Copy and paste this)
+model = init_chat_model(model="gemini-3.7-flash", model_provider="google_genai")
+
+answer_text=response.content[0]['text']
+with open("football.txt","w",encoding="utf-8") as f:
+f.write(answer_text)
+print("saved to football.txt")
+
+This is a **fantastic example** because it shows you how to run a **completely FREE, local AI model** without paying for any API keys! 
+
+You are using `HuggingFacePipeline` to download a small language model and run it directly on your laptop. 
+
+Here is the line-by-line breakdown:
+
+---
+
+### 1. The Imports (Grabbing the Tools)
+```python
+from langchain_huggingface import ChatHuggingFace, HuggingFacePipeline
+```
+*   **`HuggingFacePipeline`**: This is the "Engine." It downloads a model from Hugging Face and runs it locally on your CPU/GPU.
+*   **`ChatHuggingFace`**: This wraps the engine so it behaves like a standard LangChain chatbot (so you can easily call `.invoke()`).
+
+---
+
+### 2. The "Engine" Setup
+```python
+llm = HuggingFacePipeline(
+    model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    task="text-generation",
+    pipeline_kwargs=dict(
+        max_new_tokens=512,
+        do_sample=False,
+        repetition_penalty=1.03
+    )
+)
+```
+*   **`model_id`**: This is the **exact name** of the model on Hugging Face. `TinyLlama` is a lightweight, open-source model that can run on almost any laptop without a GPU.
+*   **`task="text-generation"`**: Tells the pipeline exactly what this model is designed to do (write new text).
+*   **`pipeline_kwargs`**: These are the "settings" you give to the engine before it writes:
+    *   **`max_new_tokens=512`**: Limits the output to 512 words/tokens (so it doesn't write a whole book).
+    *   **`do_sample=False`**: This makes the model **deterministic** (predictable). It always picks the most likely next word. This is good for factual answers.
+    *   **`repetition_penalty=1.03`**: This encourages the AI to **not repeat the same words over and over** (a common issue with small models).
+
+---
+
+### 3. The Chatbot Wrapper (The "Brain")
+```python
+chat_model = ChatHuggingFace(llm=llm)
+```
+*   This takes your raw engine (`llm`) and wraps it so it works like a normal chat AI. It can now understand questions and return text.
+
+---
+
+### 4. The Invoke (The "Prompt")
+```python
+result = chat_model.invoke("what is data science?")
+print(result.content)
+```
+*   **`invoke("what is data science?")`**: Sends the question to the model.
+*   **`result.content`**: Extracts the text answer from the response.
+
+---
+
+### 🚨 What is happening under the hood?
+1. Your code downloads the model (first time it will take a few minutes to download ~1GB).
+2. It runs the model **100% locally on your laptop**.
+3. It doesn't use the internet to ask a server; it literally **computes the answer** on your hardware. 
+
+---
+
+### 💡 Why this is AMAZING for your career:
+*   **Zero Cost:** You don't need an OpenAI or Gemini API key. It's 100% free.
+*   **Privacy:** Your data never leaves your laptop.
+*   **Portfolio Gold:** If you show a recruiter that you can run a **local LLM**, it proves you understand the **hardware and software** side of AI, not just sending API requests.
+
+**One warning:** TinyLlama is a small model (1.1B parameters), so the answers will be **short and less intelligent** than GPT-4. For a portfolio, it's a great "proof of concept," but for production, you'd use a bigger API model. 
+
+**Run it and see what it says!** 🚀
+
+You are following the **official LangChain documentation** now! That is the right move. 
+
+However, you have **2 critical errors** in this specific code that will crash if you run it:
+
+1. **The `task` parameter is still there.** As we saw before, the latest LangChain versions have removed `task` from `HuggingFacePipeline`.
+2. **`zephyr-7b-beta` is a 7-billion parameter model.** This is **massive** (needs ~14 GB of RAM and a GPU). If you are on a standard laptop, it will freeze your computer and likely crash with an out-of-memory error.
+
+---
+
+### The Problem with the Official Docs:
+The LangChain docs are written for **high-end developer machines**. They assume you have an NVIDIA GPU and 32 GB of RAM. You don't need to copy them exactly.
+
+---
+
+### ✅ The 100% SAFE, WORKING Code (For your laptop):
+
+Use a **tiny, fast model** that runs on normal laptops. **`TinyLlama`** (1.1B) is the best choice. Just remove the `task` parameter and use the `HuggingFacePipeline` *directly* (don't wrap it in `ChatHuggingFace`):
+
+```python
+from langchain_huggingface import HuggingFacePipeline
+
+llm = HuggingFacePipeline.from_model_id(
+    model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    pipeline_kwargs=dict(
+        max_new_tokens=512,
+        do_sample=False,
+        repetition_penalty=1.03,
+    ),
+)
+
+# Call .invoke() directly
+result = llm.invoke("what is data science?")
+print(result)
+```
+
+---
+
+### 💡 Why this is better than the docs:
+*   **No `task` parameter**: Matches your current LangChain version.
+*   **TinyLlama**: Runs on just 4-6 GB of RAM. It will work on any laptop.
+*   **No `ChatHuggingFace`**: TinyLlama is a raw text-generation model. Wrapping it in `ChatHuggingFace` causes the error you saw earlier.
+
+**Your next step:** Delete your old `localmodel.py` and run this. It will give you a short answer. 🚀
+DEleting:
+# HuggingFacePipeline
+# https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0/tree/main
+from langchain_huggingface import ChatHuggingFace, HuggingFacePipeline
+
+# set the pipeline
+llm = HuggingFacePipeline(
+    model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    # task="text-generation" not in latest version of langchain
+    # pipeline keyword:
+    pipeline_kwargs=dict(max_new_tokens=512, do_sample=False, repetition_penalty=1.03),
+)
+
+# make chat model
+chat_model = ChatHuggingFace(llm=llm)
+result = chat_model.invoke("what is data science?")
+print(result.content)
+
+# uv pip install transformers
+# You are missing the transformers library, which is the core library that Hugging Face models run on.
+# The error ImportError: apply_chat_template requires jinja2 to be installed just means you are missing one tiny library: jinja2 (used for formatting AI chat templates).
+# uv pip install jinja2 torch
+
+
+text-embedding-3-small: 1,536 dimensions, cost-efficient, suitable for keyword search, quick classification, and real-time applications 
+OpenAI
+OpenAI
++2
+.
+text-embedding-3-large: 3,072 dimensions, higher performance for complex semantic analysis, multilingual tasks, and scientific or legal document processing 
+OpenAI
+OpenAI
++2
+.
+text-embedding-ada-002: Legacy model, 1,536 dimensions, widely used for general-purpose embeddings, semantic search, and classification 
+cholakovit.com
+cholakovit.com
+These models are transformer-based and trained on large, diverse datasets to capture context-dependent meaning, allowing the same word to have different embeddings depending on its context 
+
+cd ..
+
+from dotenv import load_dotenv
+
+load_dotenv()
+from langchain_mistralai import ChatMistralAI
+
+model = ChatMistralAI(model="mistral-small-2603", temperature=0.9, max_tokens=12)
+
+# SHORT TERM MEMORY
+messages = []
+print("-------------welcome type 0 to exit the application-----------")
+# infinite loop till exit zero:ques ask again and again
+while True:
+    prompt = input("You:")
+    messages.append(prompt)
+    if prompt == "0":
+        break
+    response = model.invoke(messages)
+    # model.invoke multiple messages ko dekh paat hai usse koi problem ni hoti
+    messages.append(response.content)
+    print("Bot:", response.content)
+
+
+# history story as messages and messages even to model.invoke
+# model lamba data aaya tha toh confuse ho jayega messages se kaha se kisa aaya
+# dictionery mai you:bot but storage badh jayega
+
+PROBLEMS WITH CURRENT SHORT-TERM MEMORY
+1.NO ROLE SEPARATION(NO SYSTEM/USER/ASSISTANT DISTINCTION)
+2.JUST RAW STRINGS->WEAK CONVERSATION STRUCTURE
+3.MEMORY KEEPS ON INFINITELY
+4.WILL HIT TOKEN LIMIT AS WE ARE GIVING MMESSAGES LIST NOT PROMPTS
+5.API COST INCREASES OVER time
+6.SLOWER RESPONSES AS HISTORY GROWS
+7.NO TRIMMING OF IMPORTANT INFO IS there
+8.NO SUMMARIZATION OF data
+9.NOT PRODUCTION AVAILABLE
+10.NO CONTROL ON CONTEXT WINDOW
+
+"""
+The **model** is an *object* because it holds its own settings (temperature, max_tokens) and has a built-in action (`.invoke()`). 
+
+The **messages** are *objects* (System, Human, AI) because the AI needs to know **who is speaking**. Plain strings don't carry that context. 
+
+The **list** is an *object* because it acts as **memory**. It stores the entire history of the conversation, so the AI doesn't forget what you said earlier.
+
+**In Python, EVERYTHING is an object.** 
+
+That is the core truth. Even a simple string like `"hello"` is an object under the hood. 
+
+Here is the **brief difference** between them:
+
+*   **`model`** is an object because you **created it** (using `ChatMistralAI(...)`). It is a **tool** that has *settings* (temperature) and an *action* (`.invoke`).
+*   **`messages`** is a *list* of objects. It is a **container** that holds the conversation history. Inside it are `SystemMessage`, `HumanMessage`, and `AIMessage` objects.
+
+**So:** 
+- `model` = The **machine** (object).
+- `messages` = The **instruction box** (list of objects).
+"""
+
+
+STREAMLIT PERSONAL DOCS:
+
+### ✅ The "Big 8" (You nailed it):
+
+1. **`st.set_page_config`** - The "Host". Sets the title, icon, and page layout.
+2. **`st.title`** - The "Welcome Sign". Gives your app a name.
+3. **`st.caption`** - The "Subtitle". Adds small, explanatory text under the title.
+4. **`st.radio`** - The "Menu Selector". Lets users choose between options (like your Angry/Funny/Sad mode).
+5. **`st.session_state.messages`** - The "Brain". Keeps the chat history alive so it doesn't disappear when the page reloads.
+6. **`st.session_state.mode`** - The "Personality". Stores which setting is currently active.
+7. **`st.chat_input`** - The "Text Box". The clean, fixed input at the bottom of the page.
+8. **`st.chat_message`** - The "Bubble". Creates the user and assistant chat bubbles.
+
+---
+
+### 🚨 The "Missing" Component (The "Top 10%" Differentiator):
+
+**`@st.cache_resource`** is the one you are missing!
+
+Look at your current code:
+```python
+model = ChatMistralAI(model="mistral-small-2603", temperature=0.9, max_tokens=12)
+```
+
+Every time Streamlit reruns (which happens *every* time you click a button), it **re-creates the model object**. This is slow and wastes memory. 
+
+**The Pro Fix:**
+```python
+@st.cache_resource
+def get_model():
+    return ChatMistralAI(model="mistral-small-2603", temperature=0.9, max_tokens=12)
+
+model = get_model()
+```
+
+*(This tells Streamlit: "Only create the model ONCE. Then, just reuse it." This is a huge performance win and shows recruiters you understand efficiency!)*
+
+---
+
+### 🎯 Final Verdict:
+**Your "Big 8" list is 100% correct.** 
+Add **`@st.cache_resource`** to it, and you have the **complete "Ultimate Streamlit Toolkit"** to build any AI app. 
+
+PROMPTS TYPES
+1.SIMPLE PROMPTS
+2.STRUCTURED PROMPTS/ STRUCTURED OUTPUTS
+3.SYSTEM PROMPTS
+4.PROMPT TEMPLATES
+
+RUNNABLES-CHAINS
