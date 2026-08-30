@@ -301,3 +301,9 @@ PROMPTS TYPES
 4.PROMPT TEMPLATES
 
 RUNNABLES-CHAINS
+
+git add .
+git commit -m "AI Project Uploaded"
+git remote remove origin 
+git remote add origin https://github.com/laxmijin11-cyber/Mood_AI_Chatbot.git
+git push origin main  
