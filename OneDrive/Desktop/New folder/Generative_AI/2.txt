@@ -1,0 +1,148 @@
+Here is a **clean, professional, and perfectly formatted README** that is ready to copy-paste directly into your project.
+
+I have structured it so it looks highly professional on GitHub, with clear sections, tables, and no clutter.
+
+---
+
+```markdown
+# 🤖 Mood Based AI Chatbot
+
+A multi-personality AI chatbot built with **Streamlit** and **LangChain**, powered by **Mistral AI**. 
+Users can switch between **Angry**, **Funny**, and **Sad** personalities to experience completely different conversational styles.
+
+---
+
+## 📸 Project Preview
+
+*(Add a screenshot of your chatbot here)*
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+| :--- | :--- |
+| 🎭 **3 Personas** | Switch between Angry, Funny, and Sad AI personalities instantly. |
+| 🧠 **Chat Memory** | Uses `st.session_state` to retain the full conversation context. |
+| 💬 **Modern UI** | Built with `st.chat_input` and `st.chat_message` for a clean, chat-like interface. |
+| 🔄 **Reset Chat** | One-click button to clear the conversation and start fresh. |
+| 🔒 **Security** | Loads API keys securely using `python-dotenv`. |
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+| :--- | :--- |
+| Frontend UI | Streamlit |
+| AI Framework | LangChain |
+| Language Model | Mistral AI (`mistral-small-2603`) |
+| Environment | Python 3.9+ |
+
+---
+
+## 📁 Project Structure
+
+```text
+Mood_AI_Chatbot/
+├── app.py                 # Main Streamlit application
+├── requirements.txt       # List of Python dependencies
+├── .env                   # API keys (DO NOT push to GitHub)
+└── README.md              # Project documentation
+```
+
+---
+
+## 🚀 How to Run
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/laxmijin11-cyber/Mood_AI_Chatbot.git
+cd Mood_AI_Chatbot
+```
+
+### 2. Create a Virtual Environment
+```bash
+python -m venv venv
+```
+
+### 3. Activate the Environment
+
+**Windows:**
+```bash
+.\venv\Scripts\activate
+```
+
+**Mac/Linux:**
+```bash
+source venv/bin/activate
+```
+
+### 4. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Configure API Key
+Create a `.env` file in the root folder and add:
+```text
+MISTRAL_API_KEY=your_api_key_here
+```
+
+### 6. Run the Application
+```bash
+python -m streamlit run app.py
+```
+
+---
+
+## 🧠 How It Works
+
+1. **Personality Selection:** The user selects a mood (Angry, Funny, or Sad) via `st.radio`.
+2. **System Prompt:** The app sets a `SystemMessage` to define the AI's personality.
+3. **User Input:** The user's message is added to the chat history as a `HumanMessage`.
+4. **AI Response:** The `ChatMistralAI` model is invoked with the full conversation history.
+5. **Output:** The AI's response is stored as an `AIMessage` and displayed in the chat bubble.
+6. **Reset:** The `Reset Chat` button clears the session state and reruns the app.
+
+---
+
+## 🔮 Future Scope
+
+- Add support for multiple LLMs (OpenAI, Google Gemini, Llama).
+- Add voice input/output (Speech-to-Text).
+- Implement a vector database (FAISS) for RAG (Retrieval-Augmented Generation).
+- Deploy the application to Streamlit Community Cloud for public access.
+
+---
+
+## 📄 License
+
+This project is for educational purposes only.
+
+---
+
+**Created with ❤️ by Laxmi Jindal**
+```
+
+---
+
+### 💡 Final "Pro" Checklist before you push:
+
+1. **Create a `requirements.txt`** in the same folder with:
+   ```text
+   streamlit
+   langchain
+   langchain-mistralai
+   langchain-core
+   python-dotenv
+   ```
+2. **Create a `.gitignore`** with:
+   ```text
+   .env
+   venv/
+   __pycache__/
+   ```
+3. **Screenshot:** Paste a screenshot of your running app in the `(Add a screenshot of your chatbot here)` section.
+
+**You are ready to push this to GitHub and impress recruiters!** 🚀
