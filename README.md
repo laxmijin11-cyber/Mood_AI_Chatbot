@@ -7,7 +7,8 @@ Users can switch between **Angry**, **Funny**, and **Sad** personalities to expe
 
 ## 📸 Project Preview
 
-<img width="1116" height="796" alt="image" src="https://github.com/user-attachments/assets/5db9b5c1-a3c5-4387-99f7-c87a4506f7f1" />
+<img width="1116" height="796" alt="image" src="https://github.com/user-attachments/assets/679b02cb-0a55-43a7-876c-2b479c014ea0" />
+
 
 ---
 
